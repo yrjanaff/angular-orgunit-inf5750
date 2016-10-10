@@ -68,21 +68,14 @@ export class AppComponent {
     }
 
     updateList( organisationUnits ): void {
-        console.log(organisationUnits);
-        console.log(organisationUnits.length);
         this.organisationUnit = [];
         for(let i = 0; i < organisationUnits.length; i++){
-            console.log(organisationUnits[i]);
             this.organisationUnit.push(organisationUnits[i]);
         }
-
-        console.log(this.organisationUnit);
     }
 
     newUnit(): void {
-        console.log(this.model);
         this.appService.saveOrganisationUnit(this.model)
             .subscribe(this.loadList())
-            .then(this.loadList());
     }
 }

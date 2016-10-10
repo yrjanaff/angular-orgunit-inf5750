@@ -25,20 +25,14 @@ var AppComponent = (function () {
             .subscribe(function (res) { return _this.updateList(res.organisationUnits); });
     };
     AppComponent.prototype.updateList = function (organisationUnits) {
-        console.log(organisationUnits);
-        console.log(organisationUnits.length);
         this.organisationUnit = [];
         for (var i = 0; i < organisationUnits.length; i++) {
-            console.log(organisationUnits[i]);
             this.organisationUnit.push(organisationUnits[i]);
         }
-        console.log(this.organisationUnit);
     };
     AppComponent.prototype.newUnit = function () {
-        console.log(this.model);
         this.appService.saveOrganisationUnit(this.model)
-            .subscribe(this.loadList())
-            .then(this.loadList());
+            .subscribe(this.loadList());
     };
     AppComponent = __decorate([
         core_1.Component({
