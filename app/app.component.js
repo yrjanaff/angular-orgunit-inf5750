@@ -21,6 +21,7 @@ var AppComponent = (function () {
     }
     AppComponent.prototype.loadList = function () {
         var _this = this;
+        console.log("loading");
         this.appService.loadOrganisationUnits()
             .subscribe(function (res) { return _this.updateList(res.organisationUnits); });
     };
@@ -31,13 +32,23 @@ var AppComponent = (function () {
         }
     };
     AppComponent.prototype.newUnit = function () {
+        var _this = this;
         this.appService.saveOrganisationUnit(this.model)
-            .subscribe(this.loadList());
+            .subscribe(function (data) {
+            _this.loadList();
+        });
+    };
+    AppComponent.prototype.deleteUnit = function (event) {
+        var _this = this;
+        this.appService.deleteOrganisationUnit(event.target.dataset.id)
+            .subscribe(function (data) {
+            _this.loadList();
+        });
     };
     AppComponent = __decorate([
         core_1.Component({
             selector: 'my-app',
-            template: "\n           <div class=\"app\">\n            <div class=\"list\">\n                <ul>\n                    <li *ngFor=\"let unit of organisationUnit;\">{{unit.displayName}}</li>\n                </ul>\n            </div>\n            <div class=\"form\">\n                <form *ngIf=\"true\" #unitForm=\"ngForm\">\n                    <div>\n                        <label>\n                            <span>Name</span>\n                            <input type=\"text\" class=\"form-control\" id=\"name\"\n                                required\n                                [(ngModel)]=\"model.name\" name=\"name\"\n                                #name=\"ngModel\" >\n                        </label>\n                    </div>\n                    <div>\n                        <label>\n                            <span>Short name</span>\n                            <input type=\"text\" class=\"form-control\" id=\"shortName\"\n                                required\n                                [(ngModel)]=\"model.shortName\" name=\"shortName\"\n                                #shortName=\"ngModel\" >\n                        </label>\n                    </div>\n                    <div>\n                        <label>\n                            <span>Opening date</span>\n                            <input type=\"date\" class=\"form-control\" id=\"date\"\n                                required\n                                [(ngModel)]=\"model.openingDate\" name=\"openingDate\"\n                                #openingDate=\"ngModel\" >\n                        </label>\n                    </div>\n                    <div>\n                    <button type=\"submit\" class=\"btn btn-default\" [disabled]=\"!unitForm.form.valid\" (click)=\"newUnit()\">Submit</button>\n                    </div>\n                </form>\n            </div>\n        </div>\n"
+            template: "\n           <div class=\"app\">\n            <div class=\"list\">\n                <ul>\n                    <li *ngFor=\"let unit of organisationUnit;\" [attr.data-id]=\"unit.id\" (click)=\"deleteUnit($event)\">{{unit.displayName}}</li>\n                </ul>\n            </div>\n            <div class=\"form\">\n                <form *ngIf=\"true\" #unitForm=\"ngForm\">\n                    <div>\n                        <label>\n                            <span>Name</span>\n                            <input type=\"text\" class=\"form-control\" id=\"name\"\n                                required\n                                [(ngModel)]=\"model.name\" name=\"name\"\n                                #name=\"ngModel\" >\n                        </label>\n                    </div>\n                    <div>\n                        <label>\n                            <span>Short name</span>\n                            <input type=\"text\" class=\"form-control\" id=\"shortName\"\n                                required\n                                [(ngModel)]=\"model.shortName\" name=\"shortName\"\n                                #shortName=\"ngModel\" >\n                        </label>\n                    </div>\n                    <div>\n                        <label>\n                            <span>Opening date</span>\n                            <input type=\"date\" class=\"form-control\" id=\"date\"\n                                required\n                                [(ngModel)]=\"model.openingDate\" name=\"openingDate\"\n                                #openingDate=\"ngModel\" >\n                        </label>\n                    </div>\n                    <div>\n                    <button type=\"submit\" class=\"btn btn-default\" [disabled]=\"!unitForm.form.valid\" (click)=\"newUnit()\">Submit</button>\n                    </div>\n                </form>\n            </div>\n        </div>\n"
         }), 
         __metadata('design:paramtypes', [app_service_1.AppService])
     ], AppComponent);

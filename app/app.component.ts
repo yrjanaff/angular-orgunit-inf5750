@@ -11,7 +11,7 @@ import 'rxjs/Rx';
            <div class="app">
             <div class="list">
                 <ul>
-                    <li *ngFor="let unit of organisationUnit;">{{unit.displayName}}</li>
+                    <li *ngFor="let unit of organisationUnit;" [attr.data-id]="unit.id" (click)="deleteUnit($event)">{{unit.displayName}}</li>
                 </ul>
             </div>
             <div class="form">
@@ -63,6 +63,7 @@ export class AppComponent {
     ) { this.loadList() }
 
     loadList(): void {
+      console.log("loading");
         this.appService.loadOrganisationUnits()
             .subscribe( res => this.updateList(res.organisationUnits) );
     }
@@ -76,6 +77,15 @@ export class AppComponent {
 
     newUnit(): void {
         this.appService.saveOrganisationUnit(this.model)
-            .subscribe(this.loadList())
+            .subscribe((data) => {
+              this.loadList()
+            })
+    }
+
+    deleteUnit(event): void {
+      this.appService.deleteOrganisationUnit(event.target.dataset.id)
+          .subscribe((data) => {
+            this.loadList()
+          })
     }
 }
